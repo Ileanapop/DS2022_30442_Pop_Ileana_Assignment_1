@@ -23,6 +23,8 @@ builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IEnergyDeviceService, EnergyDeviceService>();
 builder.Services.AddTransient<IEnergyDeviceRepository, EnergyDeviceRepository>();
+builder.Services.AddTransient<IUserDeviceService, UserDeviceService>();
+builder.Services.AddTransient<IUserDeviceRepository, UserDeviceRepository>();
 
 
 var app = builder.Build();

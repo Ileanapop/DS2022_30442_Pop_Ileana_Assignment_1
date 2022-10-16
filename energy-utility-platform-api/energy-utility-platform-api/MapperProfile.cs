@@ -2,6 +2,7 @@
 using energy_utility_platform_api.Dtos;
 using energy_utility_platform_api.Entities;
 using energy_utility_platform_api.ViewModels;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace energy_utility_platform_api
 {
@@ -36,6 +37,17 @@ namespace energy_utility_platform_api
             CreateMap<EnergyDeviceForUpdateDto, EnergyDevice>();
 
             CreateMap<EnergyDevice, EnergyDeviceViewModel>();
+
+            #endregion
+
+            #region User - Device Profiles
+            CreateMap<UserDeviceForCreateDto, UserDevice>();
+
+            CreateMap<User, UserViewModelWithoutList>();
+            CreateMap<EnergyDevice, EnergyDeviceViewModelWithoutList>();
+
+            CreateMap<UserDevice, UserDeviceViewModel>();
+                //.ForMember(dest => dest.User, opt => opt.MapFrom(src => src.User);
 
             #endregion
         }

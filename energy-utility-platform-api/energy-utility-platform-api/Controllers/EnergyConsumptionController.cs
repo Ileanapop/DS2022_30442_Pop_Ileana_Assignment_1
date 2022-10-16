@@ -7,5 +7,6 @@ namespace energy_utility_platform_api.Controllers
     [ApiController]
     public class EnergyConsumptionController : ControllerBase
     {
+
     }
 }
