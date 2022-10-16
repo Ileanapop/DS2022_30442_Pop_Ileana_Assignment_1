@@ -21,6 +21,8 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddTransient<IEnergyDeviceService, EnergyDeviceService>();
+builder.Services.AddTransient<IEnergyDeviceRepository, EnergyDeviceRepository>();
 
 
 var app = builder.Build();

@@ -60,12 +60,12 @@ namespace energy_utility_platform_api.Services
 
             var existingUserByName = await _userRepository.GetUserByName(user.Name);
 
-            if(existingUserByName.Id != Guid.Empty && existingUserById.Id != user.Id)
+            if(existingUserByName.Id != Guid.Empty && existingUserByName.Id != user.Id)
             {
                 throw new ConflictException("Name already exists");
             }
 
-            var definedUserType = Enum.IsDefined(typeof(UserTypeEnum), user.Type);
+            //var definedUserType = Enum.IsDefined(typeof(UserTypeEnum), user.Type);
 
             var result = await _userRepository.Update(_mapper.Map<User>(user));
 

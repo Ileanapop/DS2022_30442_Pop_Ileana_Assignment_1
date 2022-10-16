@@ -27,7 +27,16 @@ namespace energy_utility_platform_api
                     }
                 );
             CreateMap<User, UserViewModel>();
-            
+
+            #endregion
+
+            #region Energy device profiles
+
+            CreateMap<EnergyDeviceForCreateDto, EnergyDevice>();
+            CreateMap<EnergyDeviceForUpdateDto, EnergyDevice>();
+
+            CreateMap<EnergyDevice, EnergyDeviceViewModel>();
+
             #endregion
         }
     }
