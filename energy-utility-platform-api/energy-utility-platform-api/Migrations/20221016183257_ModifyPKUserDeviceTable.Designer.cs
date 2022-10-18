@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using energy_utility_platform_api.Entities.DataPersistence;
 
@@ -11,9 +12,10 @@ using energy_utility_platform_api.Entities.DataPersistence;
 namespace energy_utility_platform_api.Migrations
 {
     [DbContext(typeof(UtilityPlatformContext))]
-    partial class UtilityPlatformContextModelSnapshot : ModelSnapshot
+    [Migration("20221016183257_ModifyPKUserDeviceTable")]
+    partial class ModifyPKUserDeviceTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

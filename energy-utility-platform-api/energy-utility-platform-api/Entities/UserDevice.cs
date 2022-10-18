@@ -2,6 +2,7 @@
 {
     public class UserDevice
     {
+        public Guid Id { get; set; }
         public Guid UserId { get; set; }
         public Guid EnergyDeviceId { get; set; }
         public string Address { get; set; }

@@ -47,7 +47,7 @@ namespace energy_utility_platform_api.Entities.DataPersistence
                 e =>
                 {
                     e.ToTable("UserDevices");
-                    e.HasKey(x => new {x.UserId, x.EnergyDeviceId});
+                    e.HasKey(x => x.Id);
                     e.Property(x => x.Address).HasMaxLength(500);
                     e.HasOne(x => x.User).WithMany(x => x.UserDevices);
                     e.HasOne(x => x.EnergyDevice).WithMany(x => x.UserDevices);

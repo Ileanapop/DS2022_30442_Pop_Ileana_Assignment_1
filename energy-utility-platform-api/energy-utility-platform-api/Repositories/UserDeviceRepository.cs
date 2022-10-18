@@ -14,6 +14,9 @@ namespace energy_utility_platform_api.Repositories
 
         public async Task<UserDevice> Add(UserDevice userDevice)
         {
+            var newId = Guid.NewGuid();
+
+            userDevice.Id = newId;
 
             await _utilityPlatformContext.UserDevices.AddAsync(userDevice);
 
