@@ -7,6 +7,7 @@ namespace energy_utility_platform_api.ViewModels
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
+        public string Password { get; set; }
         public List<EnergyDeviceViewModel> Devices { get; set; }
     }
 }

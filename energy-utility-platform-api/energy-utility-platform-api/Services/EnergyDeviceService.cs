@@ -78,5 +78,12 @@ namespace energy_utility_platform_api.Services
 
             return result;
         }
+
+        public async Task<List<EnergyDevice>> GetAll()
+        {
+            var result = await _energyDeviceRepository.GetAll();
+
+            return result;
+        }
     }
 }

@@ -12,5 +12,9 @@ namespace energy_utility_platform_api.Interfaces.RepositoryInterfaces
 
         public Task<User> Update(User user);
         public Task<User> Delete(Guid id);
+
+        public User GetUserByNameNonAsync(string name);
+
+        public Task<List<User>> GetAllUsers();
     }
 }

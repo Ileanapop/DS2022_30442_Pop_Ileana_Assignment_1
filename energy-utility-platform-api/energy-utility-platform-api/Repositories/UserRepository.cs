@@ -51,6 +51,27 @@ namespace energy_utility_platform_api.Repositories
             return existingUser;
         }
 
+        public User GetUserByNameNonAsync(string name)
+        {
+            var existingUser = _utilityPlatformContext.Users.FirstOrDefault(x => x.Name == name);
+
+            if (existingUser == null)
+            {
+                return new User();
+            }
+
+            return existingUser;
+        }
+
+        public async Task<List<User>> GetAllUsers()
+        {
+            var result = await _utilityPlatformContext.Users.ToListAsync();
+
+            if (result is null)
+                return new List<User>();
+            return result;
+        }
+
         public async Task<User> Update(User user)
         {
             var userToUpdate = await _utilityPlatformContext.Users

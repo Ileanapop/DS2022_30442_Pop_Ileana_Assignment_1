@@ -9,5 +9,7 @@ namespace energy_utility_platform_api.Interfaces.RepositoryInterfaces
         public Task<EnergyDevice> GetEnergyDeviceByModelName(string name);
         public Task<EnergyDevice> Update(EnergyDevice energyDevice);
         public Task<EnergyDevice> Delete(Guid id);
+
+        public Task<List<EnergyDevice>> GetAll();
     }
 }

@@ -42,6 +42,17 @@ namespace energy_utility_platform_api.Repositories
             return result;
         }
 
+        public async Task<List<EnergyDevice>> GetAll()
+        {
+            var result = await _utilityPlatformContext.EnergyDevices.ToListAsync();
+
+            if(result is null)
+            {
+                return new List<EnergyDevice>();
+            }
+            return result;
+        }
+
         public async Task<EnergyDevice> GetEnergyDeviceById(Guid id)
         {
             var result = await _utilityPlatformContext.EnergyDevices.FirstOrDefaultAsync(x => x.Id == id);

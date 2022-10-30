@@ -12,5 +12,7 @@ namespace energy_utility_platform_api.Interfaces.ServiceInterfaces
         public Task<EnergyDevice> Update(EnergyDeviceForUpdateDto user);
 
         public Task<EnergyDevice> Delete(Guid id);
+
+        public Task<List<EnergyDevice>> GetAll();
     }
 }

@@ -2,9 +2,11 @@
 using energy_utility_platform_api.Dtos;
 using energy_utility_platform_api.Entities;
 using energy_utility_platform_api.Interfaces.ServiceInterfaces;
+using energy_utility_platform_api.Middleware.Auth;
 using energy_utility_platform_api.Services;
 using energy_utility_platform_api.Utils.CustomExceptions;
 using energy_utility_platform_api.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,6 +27,7 @@ namespace energy_utility_platform_api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = Policies.Admin)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Add([FromBody] EnergyDeviceForCreateDto newEnergyDeviceDto)
@@ -41,10 +44,11 @@ namespace energy_utility_platform_api.Controllers
             }           
         }
 
-        [HttpGet("{id}")]
+        [HttpGet]
+        [Authorize(Policy = Policies.Admin)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> Get([FromRoute] Guid id)
+        public async Task<IActionResult> Get([FromQuery] Guid id)
         {
             var result = await _energyDeviceService.GetById(id);
 
@@ -56,10 +60,11 @@ namespace energy_utility_platform_api.Controllers
             return Ok(_mapper.Map<EnergyDeviceViewModel>(result));
         }
 
-        [HttpGet("byName/{name}")]
+        [HttpGet("byName")]
+        [Authorize(Policy = Policies.Admin)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetByName([FromRoute] string name)
+        public async Task<IActionResult> GetByName([FromQuery] string name)
         {
             var result = await _energyDeviceService.GetByModelName(name);
 
@@ -71,7 +76,24 @@ namespace energy_utility_platform_api.Controllers
             return Ok(_mapper.Map<EnergyDeviceViewModel>(result));
         }
 
+        [HttpGet("all")]
+        [Authorize(Policy = Policies.Admin)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _energyDeviceService.GetAll();
+
+            if (result.Count() == 0)
+            {
+                return NotFound("Devices not found");
+            }
+
+            return Ok(result.Select(x => _mapper.Map<EnergyDeviceViewModelWithoutList>(x)));
+        }
+
         [HttpPut]
+        [Authorize(Policy = Policies.Admin)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -96,10 +118,10 @@ namespace energy_utility_platform_api.Controllers
         }
 
         [HttpDelete]
-        [Route("{id}")]
+        [Authorize(Policy = Policies.Admin)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        public async Task<IActionResult> Delete([FromQuery] Guid id)
         {
             var result = await _energyDeviceService.Delete(id);
             if (result.Id == Guid.Empty)

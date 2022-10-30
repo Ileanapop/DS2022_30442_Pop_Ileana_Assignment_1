@@ -2,8 +2,10 @@
 using energy_utility_platform_api.Dtos;
 using energy_utility_platform_api.Entities;
 using energy_utility_platform_api.Interfaces.ServiceInterfaces;
+using energy_utility_platform_api.Middleware.Auth;
 using energy_utility_platform_api.Utils.CustomExceptions;
 using energy_utility_platform_api.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -25,6 +27,7 @@ namespace energy_utility_platform_api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = Policies.Admin)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -54,6 +57,7 @@ namespace energy_utility_platform_api.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = Policies.Admin)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Get([FromRoute] Guid id)
@@ -68,10 +72,27 @@ namespace energy_utility_platform_api.Controllers
             return Ok(_mapper.Map<UserViewModel>(result));
         }
 
-        [HttpGet("byName/{name}")]
+        [HttpGet("all")]
+        [Authorize(Policy = Policies.Admin)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetByName([FromRoute] string name)
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _userService.GetAll();
+
+            if (result.Count() == 0)
+            {
+                return NotFound("Users not found");
+            }
+
+            return Ok(result.Select(x => _mapper.Map<UserViewModel>(x)));
+        }
+
+        [HttpGet("byName")]
+        [Authorize(Policy = Policies.Admin)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetByName([FromQuery] string name)
         {
             var result = await _userService.GetUserByName(name);
 
@@ -84,6 +105,7 @@ namespace energy_utility_platform_api.Controllers
         }
 
         [HttpPut]
+        [Authorize(Policy = Policies.Admin)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -118,10 +140,10 @@ namespace energy_utility_platform_api.Controllers
         }
 
         [HttpDelete]
-        [Route("{id}")]
+        [Authorize(Policy = Policies.Admin)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        public async Task<IActionResult> Delete([FromQuery] Guid id)
         {
             var result = await _userService.Delete(id);
             if(result.Id == Guid.Empty)

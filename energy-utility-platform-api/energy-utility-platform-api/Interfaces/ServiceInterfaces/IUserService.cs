@@ -1,5 +1,6 @@
 ﻿using energy_utility_platform_api.Dtos;
 using energy_utility_platform_api.Entities;
+using energy_utility_platform_api.Middleware.Auth;
 
 namespace energy_utility_platform_api.Interfaces.ServiceInterfaces
 {
@@ -12,5 +13,7 @@ namespace energy_utility_platform_api.Interfaces.ServiceInterfaces
         public Task<User> Update(UserForUpdateDto user);
 
         public Task<User> Delete(Guid id);
+
+        public Task<List<User>> GetAll();
     }
 }
