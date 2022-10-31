@@ -27,7 +27,11 @@ namespace energy_utility_platform_api
                         dst.Type = (UserTypeEnum)Enum.Parse(typeof(UserTypeEnum), src.Type);
                     }
                 );
-            CreateMap<User, UserViewModel>();
+            CreateMap<User, UserViewModel>()
+                .ForMember(
+                    dst => dst.Devices,
+                    opt => opt.MapFrom(src => src.UserDevices)
+                );
 
             #endregion
 
@@ -47,7 +51,15 @@ namespace energy_utility_platform_api
             CreateMap<EnergyDevice, EnergyDeviceViewModelWithoutList>();
 
             CreateMap<UserDevice, UserDeviceViewModel>();
-                //.ForMember(dest => dest.User, opt => opt.MapFrom(src => src.User);
+            //.ForMember(dest => dest.User, opt => opt.MapFrom(src => src.User);
+
+            #endregion
+
+            #region EnergyConsumption profiles
+
+            CreateMap<EnergyConsumptionDtoForCreate, EnergyConsumption>();
+            CreateMap<EnergyConsumption, EnergyConsumptionViewModel>();
+
 
             #endregion
         }

@@ -1,6 +1,7 @@
 ﻿using energy_utility_platform_api.Entities;
 using energy_utility_platform_api.Entities.DataPersistence;
 using energy_utility_platform_api.Interfaces.RepositoryInterfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace energy_utility_platform_api.Repositories
 {
@@ -23,6 +24,18 @@ namespace energy_utility_platform_api.Repositories
             await _utilityPlatformContext.SaveChangesAsync();
 
             return userDevice;
+        }
+
+        public async Task<UserDevice> GetUserDeviceById(Guid id)
+        {
+            var result = await _utilityPlatformContext.UserDevices.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (result == null)
+            {
+                return new UserDevice();
+            }
+
+            return result;
         }
 
     }

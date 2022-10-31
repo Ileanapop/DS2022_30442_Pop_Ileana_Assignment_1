@@ -8,9 +8,12 @@ namespace energy_utility_platform_api.Repositories
     public class UserRepository : IUserRepository
     {
         private readonly UtilityPlatformContext _utilityPlatformContext;
-        public UserRepository(UtilityPlatformContext utilityPlatformContext)
+
+        private readonly IEnergyDeviceRepository _energyDeviceRepository;
+        public UserRepository(UtilityPlatformContext utilityPlatformContext, IEnergyDeviceRepository energyDeviceRepository)
         {
             _utilityPlatformContext = utilityPlatformContext;
+            _energyDeviceRepository = energyDeviceRepository;
         }
 
         public async Task<User> Add(User user)
@@ -41,11 +44,19 @@ namespace energy_utility_platform_api.Repositories
 
         public async Task<User> GetUserByName(string name)
         {
-            var existingUser = await _utilityPlatformContext.Users.FirstOrDefaultAsync(x => x.Name == name);
+            var existingUser = await _utilityPlatformContext.Users
+                .Include(x => x.UserDevices)
+                .FirstOrDefaultAsync(x => x.Name == name);
+
 
             if(existingUser == null)
             {
                 return new User();
+            }
+
+            foreach (var x in existingUser.UserDevices)
+            {
+                x.EnergyDevice = await _energyDeviceRepository.GetEnergyDeviceById(x.EnergyDeviceId);
             }
 
             return existingUser;

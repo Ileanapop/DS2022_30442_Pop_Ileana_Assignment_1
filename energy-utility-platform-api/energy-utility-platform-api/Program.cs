@@ -35,6 +35,9 @@ builder.Services.AddTransient<IUserDeviceService, UserDeviceService>();
 builder.Services.AddTransient<IUserDeviceRepository, UserDeviceRepository>();
 builder.Services.AddTransient<IAuthService, AuthService>();
 
+builder.Services.AddTransient<IEnergyConsumptionService, EnergyConsumptionService>();
+builder.Services.AddTransient<IEnergyConsumptionRepository, EnergyConsumptionRepository>();
+
 builder.Services.AddTransient<IAuthService, AuthService>();
 builder.Services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
 

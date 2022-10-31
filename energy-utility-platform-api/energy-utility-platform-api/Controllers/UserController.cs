@@ -104,6 +104,22 @@ namespace energy_utility_platform_api.Controllers
             return Ok(_mapper.Map<UserViewModel>(result));
         }
 
+        [HttpGet("byClientName")]
+        [Authorize(Policy = Policies.Client)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetByClientName([FromQuery] string name)
+        {
+            var result = await _userService.GetUserByName(name);
+
+            if (result.Id == Guid.Empty)
+            {
+                return NotFound("User not found");
+            }
+
+            return Ok(_mapper.Map<UserViewModel>(result));
+        }
+
         [HttpPut]
         [Authorize(Policy = Policies.Admin)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]

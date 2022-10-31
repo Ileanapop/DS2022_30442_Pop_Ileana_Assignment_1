@@ -8,6 +8,6 @@ namespace energy_utility_platform_api.ViewModels
         public string Name { get; set; }
         public string Type { get; set; }
         public string Password { get; set; }
-        public List<EnergyDeviceViewModel> Devices { get; set; }
+        public List<UserDeviceViewModel> Devices { get; set; }
     }
 }
