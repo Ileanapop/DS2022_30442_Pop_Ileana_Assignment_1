@@ -76,7 +76,9 @@ namespace energy_utility_platform_api.Repositories
 
         public async Task<List<User>> GetAllUsers()
         {
-            var result = await _utilityPlatformContext.Users.ToListAsync();
+            var result = await _utilityPlatformContext.Users
+                .Include(x => x.UserDevices)
+                .ToListAsync();
 
             if (result is null)
                 return new List<User>();

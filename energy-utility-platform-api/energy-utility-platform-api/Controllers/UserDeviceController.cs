@@ -2,8 +2,10 @@
 using energy_utility_platform_api.Dtos;
 using energy_utility_platform_api.Entities;
 using energy_utility_platform_api.Interfaces.ServiceInterfaces;
+using energy_utility_platform_api.Middleware.Auth;
 using energy_utility_platform_api.Utils.CustomExceptions;
 using energy_utility_platform_api.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,6 +26,7 @@ namespace energy_utility_platform_api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = Policies.Admin)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]

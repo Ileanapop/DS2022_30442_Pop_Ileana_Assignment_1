@@ -39,5 +39,35 @@ namespace energy_utility_platform_api.Services
             return result;
         }
 
+        public async Task<List<EnergyConsumption>> GetAll(Guid id)
+        {
+            var existingUserDevice = await _userDeviceRepository.GetUserDeviceById(id);
+
+            if(existingUserDevice.Id == Guid.Empty)
+            {
+                throw new NotFoundException("User device not mapped");
+            }
+
+            var result = await _energyConsumptionRepository.Get(id);
+
+            return result;
+
+        }
+
+        public async Task<List<EnergyConsumption>> GetEnergyConsumptionByDay(Guid id, DateTime date)
+        {
+            var existingUserDevice = await _userDeviceRepository.GetUserDeviceById(id);
+
+            if (existingUserDevice.Id == Guid.Empty)
+            {
+                throw new NotFoundException("User device not mapped");
+            }
+
+            var result = await _energyConsumptionRepository.GetEnrgyConsumptionByDay(id, date);
+
+            return result;
+
+        }
+
     }
 }

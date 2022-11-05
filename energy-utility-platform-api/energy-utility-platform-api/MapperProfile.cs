@@ -60,6 +60,16 @@ namespace energy_utility_platform_api
             CreateMap<EnergyConsumptionDtoForCreate, EnergyConsumption>();
             CreateMap<EnergyConsumption, EnergyConsumptionViewModel>();
 
+            CreateMap<EnergyConsumption, DailyEnergyConsumptionViewModel>()
+                .ForMember(
+                    dst => dst.Hour,
+                    opt => opt.MapFrom(src => src.DateTime.Hour)
+                )
+                .ForMember(
+                    dst => dst.Consumption,
+                    opt => opt.MapFrom(src => src.Consumption)
+                );
+
 
             #endregion
         }
