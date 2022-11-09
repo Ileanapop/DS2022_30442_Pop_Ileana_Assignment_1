@@ -116,9 +116,10 @@ JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+   
 }
+
+DbPreparation.PrepPopulation(app);
 
 app.UseCors(x => x
                 .AllowAnyMethod()

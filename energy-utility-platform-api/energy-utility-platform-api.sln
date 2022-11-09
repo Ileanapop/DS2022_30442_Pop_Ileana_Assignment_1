@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "energy-utility-platform-api", "energy-utility-platform-api\energy-utility-platform-api.csproj", "{FC91B6A8-5375-4D6A-9D73-2C8DB75EDC19}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "energy-utility-platform-api", "energy-utility-platform-api\energy-utility-platform-api.csproj", "{FC91B6A8-5375-4D6A-9D73-2C8DB75EDC19}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{4F4157DD-2882-402A-99F6-1E9D7FDC0EE1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{FC91B6A8-5375-4D6A-9D73-2C8DB75EDC19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC91B6A8-5375-4D6A-9D73-2C8DB75EDC19}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC91B6A8-5375-4D6A-9D73-2C8DB75EDC19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F4157DD-2882-402A-99F6-1E9D7FDC0EE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F4157DD-2882-402A-99F6-1E9D7FDC0EE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F4157DD-2882-402A-99F6-1E9D7FDC0EE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F4157DD-2882-402A-99F6-1E9D7FDC0EE1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
