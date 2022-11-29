@@ -49,6 +49,7 @@ namespace energy_utility_platform_api.Services
                 LoginViewModel loginViewModel = new LoginViewModel();
                 loginViewModel.Key = GenerateJwtToken(user);
                 loginViewModel.UserRole = user.Type.ToString();
+                loginViewModel.UserId = user.Id;
                 return loginViewModel;
             }
             return null;

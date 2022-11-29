@@ -4,5 +4,7 @@
     {
         public string Key { get; set; }
         public string UserRole { get; set; }
+
+        public Guid UserId { get;set; }
     }
 }

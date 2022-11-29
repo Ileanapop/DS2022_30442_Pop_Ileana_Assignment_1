@@ -3,6 +3,7 @@ using energy_utility_platform_api.Interfaces.RepositoryInterfaces;
 using energy_utility_platform_api.Interfaces.ServiceInterfaces;
 using energy_utility_platform_api.MessageConsumer;
 using energy_utility_platform_api.Middleware.Auth;
+using energy_utility_platform_api.PingServer;
 using energy_utility_platform_api.Repositories;
 using energy_utility_platform_api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -47,6 +48,8 @@ builder.Services.AddTransient<IAuthService, AuthService>();
 builder.Services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
 
 builder.Services.AddHostedService<RepeatingService>();
+//builder.Services.AddHostedService<PingServerService>();
+
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -136,5 +139,12 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+var webSocketOptions = new WebSocketOptions
+{
+    KeepAliveInterval = TimeSpan.FromSeconds(20)
+};
+
+app.UseWebSockets(webSocketOptions);
 
 app.Run();

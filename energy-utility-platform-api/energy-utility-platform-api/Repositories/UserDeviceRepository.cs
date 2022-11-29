@@ -28,7 +28,9 @@ namespace energy_utility_platform_api.Repositories
 
         public async Task<UserDevice> GetUserDeviceById(Guid id)
         {
-            var result = await _utilityPlatformContext.UserDevices.FirstOrDefaultAsync(x => x.Id == id);
+            var result = await _utilityPlatformContext.UserDevices
+                .Include(x=>x.EnergyDevice)
+                .FirstOrDefaultAsync(x => x.Id == id);
 
             if (result == null)
             {

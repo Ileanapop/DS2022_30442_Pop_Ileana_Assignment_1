@@ -7,6 +7,8 @@ using energy_utility_platform_api.Utils.CustomExceptions;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using System.Net.WebSockets;
+using System;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -93,10 +95,39 @@ namespace energy_utility_platform_api.MessageConsumer
 
                                 IEnergyConsumptionService energyConsumptionService =
                                     scope.ServiceProvider.GetRequiredService<IEnergyConsumptionService>();
+
+                                IUserDeviceRepository userDeviceRepository =
+                                    scope.ServiceProvider.GetRequiredService<IUserDeviceRepository>();
+
                                 try
                                 {
                                     var result = await energyConsumptionService.Add(newConsumption);
                                     Console.WriteLine("Energy consumption {0} inserted into db...", result.Id);
+
+
+                                    //notify client
+                                    var engDevice = await userDeviceRepository.GetUserDeviceById(energyConsumptionDTO.UserDeviceId);
+
+                                    if(newConsumption.Consumption > engDevice.EnergyDevice.MaxHourlyEnergy)
+                                    {
+                                        Console.WriteLine("hereeee");
+                                        Console.WriteLine(engDevice.UserId.ToString());
+
+                                        var _connectedClientsRepository = ConnectedClientsRepository.GetInstance();
+
+                                        var connectedClientSocket = _connectedClientsRepository.GetClientSocket(engDevice.UserId.ToString());
+
+                                        //send data to frontend
+                                        Console.WriteLine("in rpeatingggg");
+                                        Console.WriteLine(connectedClientSocket);
+
+                                        string warning = "Notification: consumption for device " + engDevice.EnergyDevice.Id.ToString() + " " + engDevice.EnergyDevice.ModelName + " exceeded: max: " + engDevice.EnergyDevice.MaxHourlyEnergy.ToString() + " registered " + newConsumption.Consumption.ToString();
+
+                                        var serverMsg = Encoding.UTF8.GetBytes(warning);
+                                        Console.WriteLine(connectedClientSocket.State);
+                                        await connectedClientSocket.SendAsync(new ArraySegment<byte>(serverMsg, 0, serverMsg.Length), 0, true, CancellationToken.None);
+                                    }
+
                                 }
                                 catch (NotFoundException e)
                                 {
