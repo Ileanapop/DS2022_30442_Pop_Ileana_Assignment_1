@@ -1,4 +1,5 @@
 using energy_utility_platform_api.Entities.DataPersistence;
+using energy_utility_platform_api.Grpc.Services;
 using energy_utility_platform_api.Interfaces.RepositoryInterfaces;
 using energy_utility_platform_api.Interfaces.ServiceInterfaces;
 using energy_utility_platform_api.MessageConsumer;
@@ -9,7 +10,9 @@ using energy_utility_platform_api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.IdentityModel.Tokens.Jwt;
@@ -49,6 +52,7 @@ builder.Services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHand
 
 builder.Services.AddHostedService<RepeatingService>();
 //builder.Services.AddHostedService<PingServerService>();
+builder.Services.AddGrpc();
 
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -133,10 +137,19 @@ app.UseCors(x => x
                 .SetIsOriginAllowed(origin => true) // allow any origin
                 .AllowCredentials());
 
-app.UseHttpsRedirection();
+app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapGrpcService<ChatService>();
+});
+
+app.UseHttpsRedirection();
+
+
 
 app.MapControllers();
 
