@@ -114,6 +114,8 @@ builder.Services.AddSwaggerGen(c =>
     }
     ));
 
+builder.Services.AddGrpc();
+
 
 var app = builder.Build();
 
@@ -131,20 +133,26 @@ if (app.Environment.IsDevelopment())
 
 DbPreparation.PrepPopulation(app);
 
+app.UseRouting();
+
 app.UseCors(x => x
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .SetIsOriginAllowed(origin => true) // allow any origin
                 .AllowCredentials());
-
-app.UseRouting();
-
+app.UseGrpcWeb();
+                
 app.UseAuthentication();
 app.UseAuthorization();
 
+
+
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapGrpcService<ChatService>();
+    endpoints.MapGrpcService<ChatService>().EnableGrpcWeb()
+    .RequireCors(cors => cors.AllowAnyHeader().AllowAnyMethod()
+                                .AllowAnyOrigin());
+    endpoints.MapControllers();
 });
 
 app.UseHttpsRedirection();
