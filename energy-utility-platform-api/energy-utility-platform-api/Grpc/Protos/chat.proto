@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option csharp_namespace = "energy_utility_platform_api.Grpc.Protos";
+
+package chatManagement;
+
+service ChatService {
+	rpc JoinChat(User) returns (JoinResponse) {}
+}
+
+message User {
+    string id = 1;
+}
+
+message JoinResponse {
+    int32 error = 1;
+    string msg = 2;
+}

@@ -1,4 +1,5 @@
 using energy_utility_platform_api.Entities.DataPersistence;
+using energy_utility_platform_api.Grpc.Services;
 using energy_utility_platform_api.Interfaces.RepositoryInterfaces;
 using energy_utility_platform_api.Interfaces.ServiceInterfaces;
 using energy_utility_platform_api.MessageConsumer;
@@ -49,6 +50,7 @@ builder.Services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHand
 
 builder.Services.AddHostedService<RepeatingService>();
 //builder.Services.AddHostedService<PingServerService>();
+builder.Services.AddGrpc();
 
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -127,6 +129,8 @@ if (app.Environment.IsDevelopment())
 
 DbPreparation.PrepPopulation(app);
 
+app.UseRouting();
+
 app.UseCors(x => x
                 .AllowAnyMethod()
                 .AllowAnyHeader()
@@ -138,13 +142,23 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
-
 var webSocketOptions = new WebSocketOptions
 {
     KeepAliveInterval = TimeSpan.FromSeconds(20)
 };
 
 app.UseWebSockets(webSocketOptions);
+app.UseGrpcWeb();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapGrpcService<ChatService>().EnableGrpcWeb()
+    .RequireCors(cors => cors.AllowAnyHeader().AllowAnyMethod()
+                                .AllowAnyOrigin());
+    endpoints.MapControllers();
+});
+
+app.MapControllers();
+
 
 app.Run();
