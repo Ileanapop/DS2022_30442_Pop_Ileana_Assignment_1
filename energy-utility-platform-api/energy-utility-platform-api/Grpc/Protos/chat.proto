@@ -5,14 +5,36 @@ option csharp_namespace = "energy_utility_platform_api.Grpc.Protos";
 package chatManagement;
 
 service ChatService {
-	rpc JoinChat(User) returns (JoinResponse) {}
+    rpc JoinChat(User) returns (JoinResponse) {}
+    rpc SendMsg(ChatMessage) returns (Empty) {}
+    rpc ReceiveMsg(ReceiveMsgRequest) returns (stream ChatMessage) {}
+    rpc GetAllUsers(Empty) returns (UserList) {}
+}
+
+message ChatMessage {
+    string from = 1;
+    string to = 2;
+    string msg = 3;
 }
 
 message User {
     string id = 1;
+    string name = 2;
+    string type = 3;
+}
+
+message Empty {}
+
+message UserList {
+    repeated User users = 1;
 }
 
 message JoinResponse {
     int32 error = 1;
     string msg = 2;
+}
+
+message ReceiveMsgRequest {
+    string id = 1;
+    string user = 2;
 }
